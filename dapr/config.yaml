@@ -6,7 +6,7 @@ spec:
   actor:
     stateStore: statestore
     remindersStoragePartitions: 0
-    reminderSchedulerEnabled: true
+    # reminderSchedulerEnabled: true
   features:
     - name: SchedulerReminders
       enabled: false

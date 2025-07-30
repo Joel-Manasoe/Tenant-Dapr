@@ -23,7 +23,7 @@ namespace PaymentReceived.Controllers
         [HttpPost]
         public async Task<IActionResult> ReceivePayment([FromBody] PayBill payment)
         {
-            _logger.LogWarning("Received payment for tenant: {TenantId}", payment.TenantId);
+            _logger.LogWarning("Received payment from tenant: {TenantId}", payment.TenantId);
 
             var tenantState = await _daprClient.InvokeMethodAsync<RentState>(
                 HttpMethod.Get, "tenant", $"api/Tenant/GetState/{payment.TenantId}");
