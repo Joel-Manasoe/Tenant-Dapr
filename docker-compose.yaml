@@ -1,0 +1,157 @@
+version: "3.9"
+
+services:
+  tenant:
+    build:
+      context: .
+      dockerfile: Tenant.Dapr/Dockerfile
+    container_name: tenant
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    networks:
+      - dapr-network
+    ports:
+      - "5000:80"
+    restart: on-failure
+
+  tenant-dapr:
+    image: "daprio/daprd:latest"
+    command: [ "./daprd",
+            "-app-id", "tenant",
+            "-app-port", "80",
+            "-dapr-http-port", "3500",
+            "-dapr-grpc-port", "50001",
+            "-resources-path", "/components",
+            "-config", "/dapr/config.yaml",
+            "-placement-host-address", "placement:50005",
+            "-enable-app-health-check",
+            "-app-health-check-path", "healthz",
+            "-app-health-probe-interval", "10"]
+    volumes:
+      - "./components:/components"
+      - "./dapr/config.yaml:/dapr/config.yaml"
+    depends_on:
+      - tenant
+      - placement
+    network_mode: "service:tenant"
+    restart: on-failure
+
+  payment:
+    build:
+      context: .
+      dockerfile: Payment/Dockerfile
+    container_name: payment
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - DAPR_HTTP_PORT=3501
+      - DAPR_GRPC_PORT=50002
+    depends_on:
+      - redis
+    networks:
+      - dapr-network
+    ports:
+      - "5001:80"
+    restart: on-failure
+
+  payment-dapr:
+    image: "daprio/daprd:latest"
+    command: [ "./daprd",
+            "-app-id", "payment",
+            "-app-port", "80",
+            "-dapr-http-port", "3501",
+            "-dapr-grpc-port", "50002",
+            "-resources-path", "/components",
+            "-config", "/dapr/config.yaml",
+            "-placement-host-address", "placement:50005",
+            "-enable-app-health-check",
+            "-app-health-check-path", "healthz",
+            "-app-health-probe-interval", "10"]
+    volumes:
+      - "./components:/components"
+      - "./dapr/config.yaml:/dapr/config.yaml"
+    depends_on:
+      - payment
+      - placement
+    network_mode: "service:payment"
+    restart: on-failure
+
+  paymentreceived:
+    build:
+      context: .
+      dockerfile: PaymentReceived/Dockerfile
+    container_name: paymentreceived
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - DAPR_HTTP_PORT=3502
+      - DAPR_GRPC_PORT=50003
+    networks:
+      - dapr-network
+    ports:
+      - "5002:80"
+    restart: on-failure
+
+  paymentreceived-dapr:
+    image: "daprio/daprd:latest"
+    command: [ "./daprd",
+            "-app-id", "paymentreceived",
+            "-app-port", "80",
+            "-dapr-http-port", "3502",
+            "-dapr-grpc-port", "50003",
+            "-resources-path", "/components",
+            "-config", "/dapr/config.yaml",
+            "-placement-host-address", "placement:50005",
+            "-enable-app-health-check",
+            "-app-health-check-path", "healthz",
+            "-app-health-probe-interval", "10"]
+   
+    volumes:
+      - "./components:/components"
+      - "./dapr/config.yaml:/dapr/config.yaml"
+    depends_on:
+      - paymentreceived
+      - placement
+    network_mode: "service:paymentreceived"
+    restart: on-failure
+
+  dapr-dashboard:
+    image: "daprio/dashboard:latest"
+    command: [
+      "--docker-compose=true",
+      "--components-path=/components",
+      "--config-path=/dapr",
+      "--docker-compose-path=/home/docker-compose.yaml"
+    ]
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./components:/components
+      - ./dapr/config.yaml:/dapr/config.yaml
+      - ./docker-compose.yaml:/home/docker-compose.yaml
+    networks:
+      - dapr-network
+    restart: on-failure
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6380:6379"
+    networks:
+      - dapr-network
+    restart: on-failure
+
+  placement:
+    image: "daprio/dapr:latest"
+    command: ["./placement", "-port", "50005"]
+    container_name: placement
+    ports:
+      - "50005:50005"
+    networks:
+      - dapr-network
+    restart: on-failure
+
+networks:
+  dapr-network:
