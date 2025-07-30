@@ -40,5 +40,4 @@ namespace PaymentReceived.Controllers
             return Ok(tenantState);
         }
     }
-
 }
