@@ -10,14 +10,16 @@ namespace Tenant.Dapr.Actors
 
         public async Task<RentState> AddTenantAsync(TenantDto tenant)
         {
-            var tenantsState = new RentState
+            var tenantState = new RentState
             {
                 Name = tenant.Name,
                 RentalAmount = tenant.RentalAmount,
                 TenantId = tenant.Id.ToString(),
                 DateCreated = DateTime.UtcNow,
             };
-            await StateManager.SetStateAsync("rentstate", tenantsState);
+            await StateManager.SetStateAsync("rentstate", tenantState);
+            Logger.LogInformation("Added state wiating to registered reminder");
+
             var reminderName = "MonthlyReminder";
             // Set an initial delay and recurrence
             var dueTime = TimeSpan.FromSeconds(15);
@@ -25,8 +27,8 @@ namespace Tenant.Dapr.Actors
 
             // registering reminder
             await RegisterReminderAsync(reminderName, null, dueTime, period);
-            Logger.LogInformation("Scheduled reminder");
-            return tenantsState;
+            Logger.LogInformation("Reminder Registered");
+            return tenantState;
         }
 
         public async Task<RentState> GetTenantStateAsync()

@@ -13,12 +13,10 @@ namespace Tenant.Dapr.Controllers
     [EnableCors("CorsPolicy")]
     public class TenantController : Controller
     {
-        private readonly DaprClient _daprClient;
         private readonly ILogger<TenantController> _logger;
         private readonly IActorProxyFactory _actorProxyFactory;
-        public TenantController(DaprClient daprClient, ILogger<TenantController> logger, IActorProxyFactory actorProxyFactory)
+        public TenantController( ILogger<TenantController> logger, IActorProxyFactory actorProxyFactory)
         {
-            this._daprClient = daprClient;
             _logger = logger;
             _actorProxyFactory = actorProxyFactory;
         }
@@ -33,12 +31,12 @@ namespace Tenant.Dapr.Controllers
         {
             var respond = new Respond();
             // create tenant actor proxy
-            var tenantActorState= _actorProxyFactory.CreateActorProxy<ITenantActor>(
+            var tenantActorProxy= _actorProxyFactory.CreateActorProxy<ITenantActor>(
                     new ActorId(tenant.Id.ToString()), nameof(TenantActor));
             try
             {
                 // call method of actor so that they can be registered into the system
-                var tenantActor = await tenantActorState.AddTenantAsync(tenant);
+                var tenantActor = await tenantActorProxy.AddTenantAsync(tenant);
                 if (tenantActor == null)
                 {
                     respond.Message = "Failed to add tenant.";
@@ -76,7 +74,7 @@ namespace Tenant.Dapr.Controllers
                 // check whether tenant exist in the system.
                 if (TenantResults == null)
                 {
-                    return NotFound(new { message = "Tenant '{tenantId}' not found.", tenantId });
+                    return NotFound(new { message = string.Format("Tenant '{0}' not found.", tenantId) });
                 }
                 return Ok(TenantResults);
             }
