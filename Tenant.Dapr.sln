@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenant.Dapr", "Tenant.Dapr\Tenant.Dapr.csproj", "{4D4D659D-5A19-4B28-88BC-8AA8379BBB21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment", "Payment\Payment.csproj", "{EB85045E-FAEC-4B76-A07F-98BA59FDC520}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentReceived", "PaymentReceived\PaymentReceived.csproj", "{E8441180-59CF-45A8-986D-2C4403FDE58F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{FECF16BE-73DD-48ED-9108-1603A9111BF5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		statestore.yaml = statestore.yaml
+		pubsub.yaml = pubsub.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		config.yaml = config.yaml
+		docker-compose.yaml = docker-compose.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dapr", "dapr", "{7FE5128F-E5C0-45C5-855F-D42E5A89EAFB}"
+	ProjectSection(SolutionItems) = preProject
+		config.yaml = config.yaml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D4D659D-5A19-4B28-88BC-8AA8379BBB21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D4D659D-5A19-4B28-88BC-8AA8379BBB21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D4D659D-5A19-4B28-88BC-8AA8379BBB21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D4D659D-5A19-4B28-88BC-8AA8379BBB21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB85045E-FAEC-4B76-A07F-98BA59FDC520}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB85045E-FAEC-4B76-A07F-98BA59FDC520}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB85045E-FAEC-4B76-A07F-98BA59FDC520}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB85045E-FAEC-4B76-A07F-98BA59FDC520}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8441180-59CF-45A8-986D-2C4403FDE58F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8441180-59CF-45A8-986D-2C4403FDE58F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8441180-59CF-45A8-986D-2C4403FDE58F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8441180-59CF-45A8-986D-2C4403FDE58F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FECF16BE-73DD-48ED-9108-1603A9111BF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FECF16BE-73DD-48ED-9108-1603A9111BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FECF16BE-73DD-48ED-9108-1603A9111BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FECF16BE-73DD-48ED-9108-1603A9111BF5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7FE5128F-E5C0-45C5-855F-D42E5A89EAFB} = {8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2AD99AED-CEFD-42F3-8853-05B8086FBEDA}
+	EndGlobalSection
+EndGlobal

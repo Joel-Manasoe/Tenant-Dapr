@@ -1,0 +1,13 @@
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: daprConfig
+spec:
+  actor:
+    stateStore: statestore
+    remindersStoragePartitions: 0
+  features:
+    - name: SchedulerReminders
+      enabled: false
+# SchedulerReminders
+# https://blog.dapr.io/posts/2025/02/27/dapr-v1.15-is-now-available/
